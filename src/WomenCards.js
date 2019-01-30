@@ -127,44 +127,40 @@ switchCard = (index) => {
         characters:  shuffled
       })
   }
- 
-  pairsCard = (name) => {
-   let pair = underscore.pairs() 
-   pair[name] = 
-   this.setState({
-     characters: pair
-   })
-  }
-  
-// _.pairs(object) 
-// Convert an object into a list of [key, value] pairs. The opposite of object.
 
-
-
-  
-
-  // shuffleCard = () => {
-  //   let shuffled = underscore.shuffle(this.state.characters);
-  //   console.log(shuffled)
+  // select = (index, name) => {
+  //   let selection = this.state.characters
+  //     selection [index] = ! this.state.characters[index, name]
+  //   if (this.state.selection.length >= 2) {
+  //     this.setState({
+  //         characters : selection[index].name
+  //     })
   //   }
+  // }
 
 render() {
+  // if (this.state.selection[0].name === this.state.selection[1].name) {
+  //   console.log("matched")
+    // this.selection = true;
+  // } else {
+  //   this.selection = false;
+  
+  //   console.log("matched!!!")
 
   return( 
-    <div className="background"> 
-      {/* <img className="image-fond" src={process.env.PUBLIC_URL + '../img/fond.jpg'} alt="fond" width="100%"/>  */}
+    <div className="fond"> 
       <div className="cards"> 
         {this.state.characters.map((item, index) => {
           return(
             item.visible ? 
-            <img key={index} src={process.env.PUBLIC_URL + item.url } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => {this.switchCard(index)}} alt="characters" />
+            <img key={index} src={process.env.PUBLIC_URL + item.url } className="characters"  onClick={() => {this.switchCard(index)}} alt="characters" />
             :
             <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => {this.switchCard(index)}} alt="characters" />  
           )}
         )}
         </div>
       <div className="button">
-         <Button outline color="danger mt-5 mb-5 text-center"  onClick={() => {this.shuffleCard(this.state.shuffled)}}>Play !</Button>
+         <Button color="danger mt-5 mb-5 text-center"  onClick={() => {this.shuffleCard(this.state.shuffled)}}>Play !</Button>
       </div>
       
     </div>
@@ -173,11 +169,7 @@ render() {
 export default WomenCards;
 
 
-
-
-
-
-// Definir une methode qui permet de cliquer uniquement 2 fois sur 2 cartes différentes.
-// Si ces cartes sont différentes, les cartes se retournent - hidden si ce st le mêmes le restent - characters
-
-
+// shuffleCard = () => {
+  //   let shuffled = underscore.shuffle(this.state.characters);
+  //   console.log(shuffled)
+  //   }
