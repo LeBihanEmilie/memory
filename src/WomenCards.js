@@ -14,7 +14,7 @@ class WomenCards extends Component {
       {
         name: 'Betty Davis',
         url: './img/BettyDavis.png' ,
-        visible: true,         
+        visible: false,         
         hidden:'./img/background.jpg',
         matched: false
       },
@@ -22,7 +22,7 @@ class WomenCards extends Component {
       {
         name: 'Nelly Bly',
         url: './img/NellyBly.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',
         matched: false
       },
@@ -30,7 +30,7 @@ class WomenCards extends Component {
       {
         name: 'Sonita Alizadeh',
         url: './img/SonitaAlizadeh.png',
-        visible: true,
+        visible: false,
         hidden: './img/background.jpg',
         matched: false
       },
@@ -38,7 +38,7 @@ class WomenCards extends Component {
       {
         name: 'temple Grandin',
         url: './img/TempleGrandin.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',   
         matched: false  
       },
@@ -46,7 +46,7 @@ class WomenCards extends Component {
       {
         name: 'Betty Davis',
         url: './img/BettyDavis.png',
-        visible: true,
+        visible: false,
         hidden: './img/background.jpg',
         matched: false
       },
@@ -54,7 +54,7 @@ class WomenCards extends Component {
       {
         name: 'Nelly Bly',
         url: './img/NellyBly.png',
-        visible: true,
+        visible: false,
         hidden: './img/background.jpg',
         matched: false
       },
@@ -62,7 +62,7 @@ class WomenCards extends Component {
       {
         name: 'Wu Zetian',
         url: './img/wuzetian.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',
         matched: false
       },
@@ -70,7 +70,7 @@ class WomenCards extends Component {
       {
         name: 'Sonita Alizadeh',
         url: './img/SonitaAlizadeh.png',
-        visible: true,
+        visible: false,
         hidden: './img/background.jpg',
         matched: false
       },
@@ -79,7 +79,7 @@ class WomenCards extends Component {
       {
         name: 'Thérèse Clerc',
         url: './img/ThereseClerc.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',
         matched: false
       },
@@ -87,7 +87,7 @@ class WomenCards extends Component {
       {
         name: 'Wu Zetian',
         url: './img/wuzetian.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',
         matched: false
       },
@@ -95,7 +95,7 @@ class WomenCards extends Component {
       {
         name: 'Thérèse Clerc',
         url: './img/ThereseClerc.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',
         matched: false
       },
@@ -103,49 +103,52 @@ class WomenCards extends Component {
       {
         name: 'temple Grandin',
         url: './img/TempleGrandin.png',
-        visible: true,
+        visible: false,
         hidden:'./img/background.jpg',
         matched: false              
       }
-    ]
+    ],
+    selection: [],
   }
 }
 // le setState ne lit pas les index d'un tableau, donc il faut déclarer une variable, et lui donner la valeur de "characters".
   
-switchCard = (index) => {
+  switchCard = (index) => {
     let modif = this.state.characters 
-      modif[index].visible = ! this.state.characters[index].visible
-      this.setState({
-        characters:  modif
-      })
+    modif[index].visible = ! this.state.characters[index].visible
+    this.setState({
+      characters: modif
+    })
   }
 
   shuffleCard = (index, url) => {
     let shuffled = underscore.shuffle(this.state.characters) 
-      shuffled[index, url] = ! this.state.characters[index, url]
-      this.setState({
-        characters:  shuffled
-      })
+    shuffled[index, url] = ! this.state.characters[index, url]
+    this.setState({
+      characters: shuffled
+    })
   }
 
-  // select = (index, name) => {
-  //   let selection = this.state.characters
-  //     selection [index] = ! this.state.characters[index, name]
-  //   if (this.state.selection.length >= 2) {
-  //     this.setState({
-  //         characters : selection[index].name
-  //     })
-  //   }
-  // }
+  selectCard = (index) => {
+   if (this.state.selection.length >= 2) {
+    this.setState({selection: [...this.state.selection, this.state.characters[index]]})
+    // console.log(this.state.selection);
+    // let selection = this.state.characters
+    //   this.setState({
+    //      characters: selection
+    //   })
+    // }
+  }
+
 
 render() {
-  // if (this.state.selection[0].name === this.state.selection[1].name) {
-  //   console.log("matched")
-    // this.selection = true;
-  // } else {
-  //   this.selection = false;
-  
-  //   console.log("matched!!!")
+  // faire une condition de départ qui dit si le tableau sélection n'est pas égal à null, alors on return qqchse
+  if (this.state.selection: ! null) {
+
+  }
+  if (this.state.selection[0].name === this.state.selection[1].name) {
+    console.log("matched")
+  } 
 
   return( 
     <div className="fond"> 
@@ -153,14 +156,14 @@ render() {
         {this.state.characters.map((item, index) => {
           return(
             item.visible ? 
-            <img key={index} src={process.env.PUBLIC_URL + item.url } className="characters"  onClick={() => {this.switchCard(index)}} alt="characters" />
+            <img key={index} src={process.env.PUBLIC_URL + item.url } className="characters"  onClick={this.onClick} alt="characters" />
             :
-            <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => {this.switchCard(index)}} alt="characters" />  
+            <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => { this.switchCard(index); this.selectCard(index);}} alt="characters" />  
           )}
         )}
         </div>
       <div className="button">
-         <Button color="danger mt-5 mb-5 text-center"  onClick={() => {this.shuffleCard(this.state.shuffled)}}>Play !</Button>
+         <Button color="danger mt-5 mb-5 text-center"  onClick={this.shuffleCard}>Play !</Button>
       </div>
       
     </div>
