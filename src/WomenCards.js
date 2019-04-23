@@ -125,13 +125,13 @@ class WomenCards extends Component {
 }
 // le setState ne lit pas les index d'un tableau, donc il faut déclarer une variable, et lui donner la valeur de "characters".
   
-  // switchCard = (index) => {
-  //   const modif = this.state.characters 
-  //  modif[index].visible = ! this.state.characters[index].visible
-  //   this.setState({
-  //     characters: modif
-  //   })
-  // }
+  switchCard = (index) => {
+    const modif = this.state.characters 
+   modif[index].visible = ! this.state.characters[index].visible
+    this.setState({
+      characters: modif
+    })
+  }
 
   shuffleCard = (index, url) => {
     const shuffled = underscore.shuffle(this.state.characters) 
@@ -141,48 +141,49 @@ class WomenCards extends Component {
     })
   }
 
-//   selectCard = (index) => {
-//    if (this.state.selection.length == 2) {
-//     this.setState({selection: [...this.state.selection, this.state.characters[index]]})
-//     console.log(this.state.selection);
-//     let selection = this.state.characters
-//       this.setState({
-//          characters: selection
-//       })
-//     }
-//  }
+  selectCard = (index) => {
+   if (this.state.selection.length == 2) {
+    this.setState({selection: [...this.state.selection, this.state.characters[index]]})
+    console.log(this.state.selection);
+    let selection = this.state.characters
+      this.setState({
+         characters: selection
+      })
+    }
+ }
 
-   toggleVisible = (index) => {
-        if(this.state.characters.length < 2){
-          this.state.characters.push(index);
-        }
-        if(this.state.selection.length == 2 && (this.state.characters[0].value == this.state.characters[1].value)){
-            this.state.characters[0].find = true
-            this.state.characters[0].find = true
-        } else {
-          this.state.characters.splice(0,2)
-        }
-      }
+  //  toggleVisible = (index) => {
+  //       if(this.state.characters.length < 2){
+  //         this.state.characters.push(index);
+  //       }
+  //       if(this.state.selection.length == 2 && (this.state.characters[0].value == this.state.characters[1].value)){
+  //           this.state.characters[0].find = true
+  //           this.state.characters[0].find = true
+  //       } else {
+  //         this.state.characters.splice(0,2)
+  //       }
+  //     }
     
 
 
 render() {
    return( 
     <div className="fond"> 
-      <div className="cards"> 
+    <div className="row">
+      <div className="cards col-lg-12"> 
         {this.state.characters.map((item, index) => {
           return(
             item.visible ? 
-            <img key={index} src={process.env.PUBLIC_URL + item.url } className="characters"  onClick={() => this.toggleVisible(index)} alt="characters" />
+            <img key={index} src={process.env.PUBLIC_URL + item.url } className="characters"  onClick={() => this.switchCard(index)} alt="characters" />
             :
-            <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => this.toggleVisible(index)} alt="characters" />  
+            <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => this.switchCard(index)} alt="characters" />  
           )}
         )}
-        </div>
+      </div>
+    </div>
       <div className="button">
          <Button color="danger mt-5 mb-5 text-center"  onClick={this.shuffleCard}>Play !</Button>
       </div>
-      
     </div>
   )}}
 
