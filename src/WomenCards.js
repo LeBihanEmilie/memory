@@ -17,7 +17,6 @@ class WomenCards extends Component {
         visible: false ,        
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -27,7 +26,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -37,7 +35,6 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -47,7 +44,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',   
         matched: false ,
-        disabled: false,
         selected: false,              
       },
 
@@ -57,7 +53,6 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -67,7 +62,6 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -77,7 +71,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,            
       },
 
@@ -87,7 +80,6 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -98,7 +90,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,             
       },
 
@@ -108,7 +99,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,            
       },
 
@@ -118,7 +108,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,            
       },
 
@@ -128,7 +117,6 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false,
         selected: false,            
       }
     ],
@@ -144,7 +132,7 @@ class WomenCards extends Component {
     const foundCharacterIndex = newCharacters.findIndex(character => character.selected);
   
     if (foundCharacterIndex >= 0) {
-      //on a trouvé une carte, qui a déjà été cliquée, reste à trouvé la sde pour matcher les 2.
+      //on a trouvé une carte, qui a déjà été cliquée, reste à trouver la sde pour matcher les 2.
 
       const foundCharacter = newCharacters[foundCharacterIndex];
 
@@ -157,11 +145,12 @@ class WomenCards extends Component {
               ...item,
               matched: true,
               selected: false,
+              visible: true
             };
           }
-
           return item;
         })});
+
       } else {
         //cas ou carte déjà sélectionnée mais qu'elle ne matche pas avec la précédente.Appliquer du css
         
@@ -188,12 +177,16 @@ class WomenCards extends Component {
       })})
     }
   }
-
+ 
   shuffleCard = (index, url) => {
     const shuffled = underscore.shuffle(this.state.characters) 
     shuffled[index, url] = ! this.state.characters[index, url]
-    this.setState({
-      characters: shuffled
+      this.setState({characters: shuffled.map((item, index) => {
+        return {
+         ...item,
+         selected: false,
+         matched : false,
+      }})
     })
   }
 
