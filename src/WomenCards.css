@@ -40,6 +40,3 @@
 } 
 
 
-.cards.is-flipped {
-  transform: translateX(-100%) rotateY(-180deg);
-}

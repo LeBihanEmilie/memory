@@ -17,7 +17,8 @@ class WomenCards extends Component {
         visible: false ,        
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
       {
@@ -26,7 +27,8 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
       {
@@ -35,7 +37,8 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
       {
@@ -44,7 +47,8 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',   
         matched: false ,
-        disabled: false  
+        disabled: false,
+        selected: false,              
       },
 
       {
@@ -53,7 +57,8 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
       {
@@ -62,7 +67,8 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
       {
@@ -71,7 +77,8 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,            
       },
 
       {
@@ -80,7 +87,8 @@ class WomenCards extends Component {
         visible: false,
         hidden: './img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
 
@@ -90,7 +98,8 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,             
       },
 
       {
@@ -99,7 +108,8 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,            
       },
 
       {
@@ -108,7 +118,8 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false 
+        disabled: false,
+        selected: false,            
       },
 
       {
@@ -117,20 +128,65 @@ class WomenCards extends Component {
         visible: false,
         hidden:'./img/background.jpg',
         matched: false,
-        disabled: false             
+        disabled: false,
+        selected: false,            
       }
     ],
-    selection: [],
   }
 }
 // le setState ne lit pas les index d'un tableau, donc il faut déclarer une variable, et lui donner la valeur de "characters".
   
-  switchCard = (index) => {
-    const modif = this.state.characters 
-   modif[index].visible = ! this.state.characters[index].visible
-    this.setState({
-      characters: modif
-    })
+  switchCard = (selectedCharacterIndex) => {
+    const newCharacters = [...this.state.characters];
+   
+    const selectedCharacter = newCharacters[selectedCharacterIndex];
+
+    const foundCharacterIndex = newCharacters.findIndex(character => character.selected);
+  
+    if (foundCharacterIndex >= 0) {
+      //on a trouvé une carte, qui a déjà été cliquée, reste à trouvé la sde pour matcher les 2.
+
+      const foundCharacter = newCharacters[foundCharacterIndex];
+
+      if (selectedCharacter.name === foundCharacter.name && selectedCharacterIndex !== foundCharacterIndex) {
+        // dans ce cas, on a une carte sélectionnée qui correspond à la sde carte que l'on vient sélectionner.
+
+        this.setState({characters: newCharacters.map((item, index) => {
+          if (index === foundCharacterIndex || index === selectedCharacterIndex) {
+            return {
+              ...item,
+              matched: true,
+              selected: false,
+            };
+          }
+
+          return item;
+        })});
+      } else {
+        //cas ou carte déjà sélectionnée mais qu'elle ne matche pas avec la précédente.Appliquer du css
+        
+        this.setState({characters: newCharacters.map((item, index) => {
+          if (index === foundCharacterIndex) {
+            return {
+              ...item,
+              selected: false,
+            };
+          }
+          return item;
+        })});
+      }
+    } else {
+      // on a pas trouvé de carte sélectionnée donc, on va cliquer sur une 1ère carte.
+      this.setState({characters: newCharacters.map((item, index) => {
+        if (index === selectedCharacterIndex) {
+          return {
+            ...item,
+            selected: true,
+          };
+        }
+        return item;
+      })})
+    }
   }
 
   shuffleCard = (index, url) => {
@@ -141,31 +197,6 @@ class WomenCards extends Component {
     })
   }
 
-  selectCard = (index) => {
-   if (this.state.selection.length == 2) {
-    this.setState({selection: [...this.state.selection, this.state.characters[index]]})
-    console.log(this.state.selection);
-    let selection = this.state.characters
-      this.setState({
-         characters: selection
-      })
-    }
- }
-
-  //  toggleVisible = (index) => {
-  //       if(this.state.characters.length < 2){
-  //         this.state.characters.push(index);
-  //       }
-  //       if(this.state.selection.length == 2 && (this.state.characters[0].value == this.state.characters[1].value)){
-  //           this.state.characters[0].find = true
-  //           this.state.characters[0].find = true
-  //       } else {
-  //         this.state.characters.splice(0,2)
-  //       }
-  //     }
-    
-
-
 render() {
    return( 
     <div className="fond"> 
@@ -173,10 +204,10 @@ render() {
       <div className="cards col-lg-12"> 
         {this.state.characters.map((item, index) => {
           return(
-            item.visible ? 
+            item.selected || item.matched ? 
             <img key={index} src={process.env.PUBLIC_URL + item.url } className="characters"  onClick={() => this.switchCard(index)} alt="characters" />
             :
-            <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.visible ? "characters" : "character-hidden"}  onClick={() => this.switchCard(index)} alt="characters" />  
+            <img key={index} src={process.env.PUBLIC_URL + item.hidden } className= {item.selected || item.matched  ? "characters" : "character-hidden"}  onClick={() => this.switchCard(index)} alt="characters" />  
           )}
         )}
       </div>
